@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 
+SET(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../dmvcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake")
+
 PROJECT(dmlinq)
 
 LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -17,9 +19,18 @@ MESSAGE(STATUS "VERSION: ${DMLINQ_VERSION}")
 
 OPTION(USE_DMLINQ "use dmlinq" OFF)
 
+find_package(Boost REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+
+add_library(boost::boost INTERFACE IMPORTED)
+set_target_properties(boost::boost PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
+)
+
+
 ModuleImportAll("thirdparty")
 
-ExeImport("test" "dmgmock;benchmark_main")
+ExeImport("test" "dmgmock;benchmark_main;${Boost_LIBRARIES}")
 
 #ADD_CUSTOM_COMMAND(
 #TARGET dmlinqtest
