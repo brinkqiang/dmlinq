@@ -1,0 +1,44 @@
+cmake_minimum_required(VERSION 3.2)
+
+PROJECT(dmgmock)
+
+LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+INCLUDE(cmake/ModuleImport.cmake)
+INCLUDE(cmake/ModuleCompileOptions.cmake)
+ModuleSetCompileOptions()
+ModuleSetWinCompilerFlags()
+
+SET(DMGMOCK_VERSION_MAJOR "1")
+SET(DMGMOCK_VERSION_MINOR "0")
+SET(DMGMOCK_VERSION_PATCH "1")
+SET(DMGMOCK_VERSION "${DMGMOCK_VERSION_MAJOR}.${DMGMOCK_VERSION_MINOR}.${DMGMOCK_VERSION_PATCH}")
+
+MESSAGE(STATUS "VERSION: ${DMGMOCK_VERSION}")
+
+OPTION(USE_DMGMOCK_TEST "use dmgmock" OFF)
+
+SET(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+LibImport("dmgmock" "src/dmgmock")
+
+if(USE_DMGMOCK_TEST)
+    ExeImport("test" "dmgmock")
+endif(USE_DMGMOCK_TEST)
+
+#ADD_CUSTOM_COMMAND(
+#TARGET dmgmocktest
+#PRE_BUILD
+#COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#${CMAKE_CURRENT_SOURCE_DIR}/config/test.csv
+#$<TARGET_FILE_DIR:dmgmocktest>
+#)
+
+#INSTALL(DIRECTORY include/ DESTINATION include)
+#INSTALL(TARGETS dmgmock
+#        RUNTIME DESTINATION bin
+#        LIBRARY DESTINATION lib
+#        ARCHIVE DESTINATION lib)
+
+#SET(DMGMOCK_LIBS "dmgmock")
+#MARK_AS_ADVANCED(${DMGMOCK_LIBS})
