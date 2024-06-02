@@ -26,6 +26,5 @@ dmlinq
 ```cpp
 ```
 ## Contacts
-[![Join the chat](https://badges.gitter.im/brinkqiang/dmlinq/Lobby.svg)](https://gitter.im/brinkqiang/dmlinq)
 
 ## Thanks
