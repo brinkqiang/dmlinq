@@ -11,7 +11,7 @@ auto DmLinq<T>::select(TFunc selector) -> DmLinq<std::invoke_result_t<TFunc, con
     using TResult = std::invoke_result_t<TFunc, const T&>;
     auto self = std::make_shared<DmLinq<T>>(*this);
     
-    auto new_logic = [self, selector]() {
+    auto new_source_provider = [self, selector]() {
         auto source = self->execute();
         std::vector<TResult> result;
         result.reserve(source.size());
@@ -20,8 +20,7 @@ auto DmLinq<T>::select(TFunc selector) -> DmLinq<std::invoke_result_t<TFunc, con
         }
         return result;
     };
-    
-    return DmLinq<TResult>(self, new_logic);
+    return DmLinq<TResult>(self, new_source_provider);
 }
 
 template <typename T>
@@ -29,10 +28,9 @@ template <typename TFunc>
 auto DmLinq<T>::selectMany(TFunc selector) -> DmLinq<typename std::invoke_result_t<TFunc, const T&>::value_type> {
     using TResultVector = std::invoke_result_t<TFunc, const T&>;
     using TResult = typename TResultVector::value_type;
-    
     auto self = std::make_shared<DmLinq<T>>(*this);
 
-    auto new_logic = [self, selector]() {
+    auto new_source_provider = [self, selector]() {
         auto source = self->execute();
         std::vector<TResult> result;
         for (const auto& item : source) {
@@ -41,10 +39,9 @@ auto DmLinq<T>::selectMany(TFunc selector) -> DmLinq<typename std::invoke_result
         }
         return result;
     };
-
-    return DmLinq<TResult>(self, new_logic);
+    return DmLinq<TResult>(self, new_source_provider);
 }
 
-} // namespace dmlinq
+}
 
-#endif // __DMLINQ_PROJECTION_TPP_INCLUDE__
+#endif
