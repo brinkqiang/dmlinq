@@ -1,6 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
-
-SET(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../dmvcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake")
+cmake_minimum_required(VERSION 3.21)
 
 PROJECT(dmlinq)
 
@@ -8,7 +6,6 @@ LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 INCLUDE(cmake/ModuleImport.cmake)
 INCLUDE(cmake/ModuleCompileOptions.cmake)
 ModuleSetCompileOptions()
-ModuleSetWinCompilerFlags()
 
 SET(DMLINQ_VERSION_MAJOR "1")
 SET(DMLINQ_VERSION_MINOR "0")
@@ -18,33 +15,19 @@ SET(DMLINQ_VERSION "${DMLINQ_VERSION_MAJOR}.${DMLINQ_VERSION_MINOR}.${DMLINQ_VER
 MESSAGE(STATUS "VERSION: ${DMLINQ_VERSION}")
 
 OPTION(USE_DMLINQ "use dmlinq" OFF)
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/include/dmlinq_config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/dmlinq_config.h)
 
-find_package(Boost REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
-
-add_library(boost::boost INTERFACE IMPORTED)
-set_target_properties(boost::boost PROPERTIES
-    INTERFACE_INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
-)
-
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+set(CMAKE_STATIC_LIBRARY_PREFIX "")
+set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
 ModuleImportAll("thirdparty")
 
-ExeImport("test" "dmgmock;benchmark_main;${Boost_LIBRARIES}")
+LibImport("libdmlinq" "src/libdmlinq")
 
-#ADD_CUSTOM_COMMAND(
-#TARGET dmlinqtest
-#PRE_BUILD
-#COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#${CMAKE_CURRENT_SOURCE_DIR}/config/test.csv
-#$<TARGET_FILE_DIR:dmlinqtest>
-#)
+if(PROJECT_IS_TOP_LEVEL)
+    ExeImport("test" "libdmlinq;dmtest")
+    ExeImport("examples" "libdmlinq")
+endif()
 
-#INSTALL(DIRECTORY include/ DESTINATION include)
-#INSTALL(TARGETS dmlinq
-#        RUNTIME DESTINATION bin
-#        LIBRARY DESTINATION lib
-#        ARCHIVE DESTINATION lib)
-
-#SET(DMLINQ_LIBS "dmlinq")
-#MARK_AS_ADVANCED(${DMLINQ_LIBS})
+AddInstall("libdmlinq" "${CMAKE_CURRENT_SOURCE_DIR}/include")
