@@ -97,7 +97,7 @@ int main() {
     // 7. SelectMany: Flatten a list of teams and their players
     auto teams_and_players = from(players)
         .selectMany([](const Player& p) {
-        return std::vector<std::string>{p.team, p.name};
+        return std::vector<std::string>{p.team + "|" + p.name};
             })
         .toVector();
     print_query_result("7. SelectMany Demo (Team, Player, Team, Player...)", teams_and_players);
