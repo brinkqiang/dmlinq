@@ -23,7 +23,7 @@ set(CMAKE_SHARED_LIBRARY_PREFIX "")
 
 ModuleImportAll("thirdparty")
 
-LibImport("libdmlinq" "src/libdmlinq")
+InterfaceImport("libdmlinq" "include" "")
 
 if(PROJECT_IS_TOP_LEVEL)
     ExeImport("test" "libdmlinq;dmtest")

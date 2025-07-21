@@ -1,4 +1,4 @@
-﻿
+
 // Copyright (c) 2018 brinkqiang (brink.qiang@gmail.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,27 +19,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef __DMLINQ_H_INCLUDE__
-#define __DMLINQ_H_INCLUDE__
+#ifndef __DMLINQ_CONFIG_H_INCLUDE__
+#define __DMLINQ_CONFIG_H_INCLUDE__
 
-#include "dmos.h" // dmos.h已经处理平台头文件, 以及相关宏定义
-#include "dmfix_win_utf8.h" // 处理 win平台utf8问题
-#include "dmmoduleptr.h"
+#define DMLINQ_VERSION "1.0.1"
+/* #undef USE_DMLINQ */
 
-class Idmlinq;
-
-typedef DmModulePtr<Idmlinq> dmlinqPtr;
-
-class Idmlinq
-{
-public:
-    virtual ~Idmlinq(){}
-    virtual void DMAPI Release(void) = 0;
-	
-    virtual void DMAPI Test(void) = 0;
-};
-
-extern "C" DMEXPORT_DLL Idmlinq* DMAPI dmlinqGetModule();
-
-typedef Idmlinq* (DMAPI* PFN_dmlinqGetModule)();
-#endif // __DMLINQ_H_INCLUDE__
+#endif // __DMLINQ_CONFIG_H_INCLUDE__

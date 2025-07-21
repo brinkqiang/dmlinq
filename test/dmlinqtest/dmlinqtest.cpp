@@ -1,5 +1,5 @@
 
-#include "dmlinq.h"
+#include "dmlinq.hpp"
 #include "gtest.h"
 
 class env_dmlinq
@@ -26,10 +26,5 @@ protected:
 
 TEST_F(frame_dmlinq, init)
 {
-    Idmlinq* module = dmlinqGetModule();
-    if (module)
-    {
-        module->Test();
-        module->Release();
-    }
+
 }
