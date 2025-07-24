@@ -20,6 +20,9 @@ vcpkg_cmake_install()
 
 vcpkg_copy_pdbs()
 
+
+set(VCPKG_POLICY_ALLOW_DEBUG_INCLUDE enabled)
+
 # 安装 LICENSE 文件和 usage 文件
 file(INSTALL ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)
 file(INSTALL ${CURRENT_PORT_DIR}/usage DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT})
