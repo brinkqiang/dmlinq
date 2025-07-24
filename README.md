@@ -27,4 +27,8 @@ dmlinq
 ```
 ## Contacts
 
+## vcpkg install
+
+vcpkg install dmlinq --overlay-ports=./vcpkg-ports
+
 ## Thanks
